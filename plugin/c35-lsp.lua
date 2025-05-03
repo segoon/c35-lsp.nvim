@@ -35,4 +35,10 @@ local function generate_cmy_schema(fname)
   )
 end
 
-vim.api.nvim_create_user_command('CMYGenerateSchema', function() generate_cmy_schema(vim.api.nvim_buf_get_name(0)) end, {})
+vim.api.nvim_create_autocmd(
+  {'LspAttach', 'BufWritePost'},
+  {
+    pattern = { "codegen-module.yaml" },
+    callback = function() generate_cmy_schema(vim.api.nvim_buf_get_name(0)) end,
+  }
+)
